@@ -1,6 +1,7 @@
 """
 A password generator
 The passwords will be between 12 and 52 characters.
+There may be a length count delta of 1 due to rounding.
 """
 
 import string
