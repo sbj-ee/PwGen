@@ -135,3 +135,26 @@ class TestCLI:
         )
         assert result.returncode == 0
         assert "Password length" in result.stdout
+
+    def test_cli_quiet_flag(self):
+        """CLI -q flag should output password only."""
+        result = subprocess.run(
+            [sys.executable, "pwgen.py", "-l", "20", "-q"],
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0
+        # Should only contain the password (20 chars) and newline
+        assert len(result.stdout.strip()) == 20
+        assert "Strong Password" not in result.stdout
+        assert "len is" not in result.stdout
+
+    def test_cli_quiet_long_flag(self):
+        """CLI --quiet flag should output password only."""
+        result = subprocess.run(
+            [sys.executable, "pwgen.py", "-l", "15", "--quiet"],
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0
+        assert len(result.stdout.strip()) == 15

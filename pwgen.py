@@ -73,11 +73,12 @@ def get_length_interactive() -> int:
             print("Please enter a valid number.")
 
 
-def pwgen(length: int | None = None) -> str:
+def pwgen(length: int | None = None, quiet: bool = False) -> str:
     """Generate and display a password.
 
     Args:
         length: Password length. If None, prompts interactively.
+        quiet: If True, only output the password with no extra text.
 
     Returns:
         Generated password string
@@ -86,8 +87,11 @@ def pwgen(length: int | None = None) -> str:
         length = get_length_interactive()
 
     password = generate_password(length)
-    print("Strong Password: ", password)
-    print(f"len is {len(password)}")
+    if quiet:
+        print(password)
+    else:
+        print("Strong Password: ", password)
+        print(f"len is {len(password)}")
     return password
 
 
@@ -100,8 +104,13 @@ def main():
         metavar="12-52",
         help="Password length (12-52). If not specified, prompts interactively.",
     )
+    parser.add_argument(
+        "-q", "--quiet",
+        action="store_true",
+        help="Output password only, no extra text.",
+    )
     args = parser.parse_args()
-    pwgen(args.length)
+    pwgen(args.length, args.quiet)
 
 
 if __name__ == "__main__":

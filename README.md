@@ -16,6 +16,10 @@ A simple password generator that creates strong passwords with guaranteed charac
 python pwgen.py -l 20
 python pwgen.py --length 20
 
+# Quiet mode - output password only (useful for scripting)
+python pwgen.py -l 20 -q
+python pwgen.py -l 20 --quiet
+
 # Interactive mode (prompts for length)
 python pwgen.py
 ```
@@ -26,6 +30,9 @@ python pwgen.py
 $ python pwgen.py -l 20
 Strong Password:  7#kB9xM!pL2@nQwE4$jR
 len is 20
+
+$ python pwgen.py -l 20 -q
+7#kB9xM!pL2@nQwE4$jR
 
 $ python pwgen.py
 How many characters do you want in your password (12-52)? 25
