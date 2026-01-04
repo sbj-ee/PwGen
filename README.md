@@ -8,6 +8,15 @@ A simple password generator that creates strong passwords with guaranteed charac
 - First 3 characters are always: digit, symbol, letter (ensures compatibility with password policies)
 - Mix of lowercase, uppercase, digits, and symbols (~60% letters, ~40% digits/symbols)
 - Exact length matching (no off-by-one errors)
+- Quiet mode for scripting
+
+## Installation
+
+```bash
+git clone https://github.com/sbj-ee/PwGen.git
+cd PwGen
+pip install -r requirements.txt  # Only needed for running tests
+```
 
 ## Usage
 
@@ -23,6 +32,14 @@ python pwgen.py -l 20 --quiet
 # Interactive mode (prompts for length)
 python pwgen.py
 ```
+
+## CLI Options
+
+| Option | Description |
+|--------|-------------|
+| `-l`, `--length` | Password length (12-52). Prompts interactively if not specified. |
+| `-q`, `--quiet` | Output password only, no extra text. |
+| `-h`, `--help` | Show help message. |
 
 ## Examples
 
@@ -48,5 +65,5 @@ pytest test_pwgen.py -v
 
 ## Requirements
 
-- Python 3.6+
+- Python 3.10+
 - pytest (for running tests)
