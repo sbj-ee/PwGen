@@ -1,7 +1,7 @@
 """
 A password generator
 The passwords will be between 12 and 52 characters.
-There may be a length count delta of 1 due to rounding.
+First 3 characters are always: digit, symbol, letter.
 """
 
 import string
@@ -42,31 +42,36 @@ def pwgen() -> str:
                 "How many characters do you want in your password (max 52)? "
             )
 
-    # shuffle all lists
-    random.shuffle(s1)
-    random.shuffle(s2)
-    random.shuffle(s3)
-    random.shuffle(s4)
+    # Reserve first 3 characters: digit, symbol, letter
+    first_digit = random.choice(s3)
+    first_symbol = random.choice(s4)
+    first_letter = random.choice(s1 + s2)
 
-    # calculate 30% & 20% of number of characters
-    part1 = round(characters_number * (30 / 100))
-    part2 = round(characters_number * (20 / 100))
+    # Calculate remaining length to fill
+    remaining_length = characters_number - 3
 
-    # generation of the password (60% letters and 40% digits & punctuations)
-    result = list()
-    for x in range(part1):
-        result.append(s1[x])
-        result.append(s2[x])
+    # Build pool from remaining characters (60% letters, 40% digits/symbols)
+    letters_count = round(remaining_length * 0.6)
+    digits_symbols_count = remaining_length - letters_count
 
-    for x in range(part2):
-        result.append(s3[x])
-        result.append(s4[x])
+    # Split evenly between lower/upper and digits/symbols
+    lower_count = letters_count // 2
+    upper_count = letters_count - lower_count
+    digits_count = digits_symbols_count // 2
+    symbols_count = digits_symbols_count - digits_count
 
-    # shuffle result
-    random.shuffle(result)
+    # Build the remaining characters (with replacement to handle any length)
+    remaining = []
+    remaining.extend(random.choices(s1, k=lower_count))
+    remaining.extend(random.choices(s2, k=upper_count))
+    remaining.extend(random.choices(s3, k=digits_count))
+    remaining.extend(random.choices(s4, k=symbols_count))
 
-    # join result
-    password = "".join(result)
+    # Shuffle remaining characters
+    random.shuffle(remaining)
+
+    # Build final password: digit + symbol + letter + shuffled remainder
+    password = first_digit + first_symbol + first_letter + "".join(remaining)
     print("Strong Password: ", password)
     print(f"len is {len(password)}")
     return password
