@@ -4,43 +4,27 @@ The passwords will be between 12 and 52 characters.
 First 3 characters are always: digit, symbol, letter.
 """
 
-import string
+import argparse
 import random
+import string
 
 
-def pwgen() -> str:
-    class InvalidNumber(Exception):
-        """Exception raised for invalid number entered"""
+def generate_password(length: int) -> str:
+    """Generate a password of the specified length.
 
-        def __init__(self, message):
-            self.message = message
-            super().__init__(self.message)
+    Args:
+        length: Password length (must be between 12 and 52)
 
-    # store all characters in lists
+    Returns:
+        Generated password string
+    """
+    if length < 12 or length > 52:
+        raise ValueError("Password length must be between 12 and 52")
+
     s1 = list(string.ascii_lowercase)
     s2 = list(string.ascii_uppercase)
     s3 = list(string.digits)
     s4 = list(string.punctuation)
-
-    # Ask user about the number of characters
-    user_input = input("How many characters do you want in your password (max 52)? ")
-
-    # check this input is it number? is it more than 8?
-    while True:
-        try:
-            characters_number = int(user_input)
-            if characters_number < 12 or characters_number > 52:
-                raise InvalidNumber(
-                    "Your number should be at least 12 and no more than 52."
-                )
-            else:
-                break
-        except InvalidNumber:
-            print("Please, Enter numbers only.")
-            print("Your number should be at least 12 and no more than 52.")
-            user_input = input(
-                "How many characters do you want in your password (max 52)? "
-            )
 
     # Reserve first 3 characters: digit, symbol, letter
     first_digit = random.choice(s3)
@@ -48,7 +32,7 @@ def pwgen() -> str:
     first_letter = random.choice(s1 + s2)
 
     # Calculate remaining length to fill
-    remaining_length = characters_number - 3
+    remaining_length = length - 3
 
     # Build pool from remaining characters (60% letters, 40% digits/symbols)
     letters_count = round(remaining_length * 0.6)
@@ -71,11 +55,54 @@ def pwgen() -> str:
     random.shuffle(remaining)
 
     # Build final password: digit + symbol + letter + shuffled remainder
-    password = first_digit + first_symbol + first_letter + "".join(remaining)
+    return first_digit + first_symbol + first_letter + "".join(remaining)
+
+
+def get_length_interactive() -> int:
+    """Prompt user for password length interactively."""
+    while True:
+        user_input = input(
+            "How many characters do you want in your password (12-52)? "
+        )
+        try:
+            length = int(user_input)
+            if 12 <= length <= 52:
+                return length
+            print("Your number should be at least 12 and no more than 52.")
+        except ValueError:
+            print("Please enter a valid number.")
+
+
+def pwgen(length: int | None = None) -> str:
+    """Generate and display a password.
+
+    Args:
+        length: Password length. If None, prompts interactively.
+
+    Returns:
+        Generated password string
+    """
+    if length is None:
+        length = get_length_interactive()
+
+    password = generate_password(length)
     print("Strong Password: ", password)
     print(f"len is {len(password)}")
     return password
 
 
+def main():
+    parser = argparse.ArgumentParser(description="Generate a strong password")
+    parser.add_argument(
+        "-l", "--length",
+        type=int,
+        choices=range(12, 53),
+        metavar="12-52",
+        help="Password length (12-52). If not specified, prompts interactively.",
+    )
+    args = parser.parse_args()
+    pwgen(args.length)
+
+
 if __name__ == "__main__":
-    pwgen()
+    main()

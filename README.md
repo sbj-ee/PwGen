@@ -12,18 +12,25 @@ A simple password generator that creates strong passwords with guaranteed charac
 ## Usage
 
 ```bash
+# Specify length via command line
+python pwgen.py -l 20
+python pwgen.py --length 20
+
+# Interactive mode (prompts for length)
 python pwgen.py
 ```
 
-You'll be prompted to enter the desired password length (12-52 characters).
-
-## Example
+## Examples
 
 ```
-$ python pwgen.py
-How many characters do you want in your password (max 52)? 20
+$ python pwgen.py -l 20
 Strong Password:  7#kB9xM!pL2@nQwE4$jR
 len is 20
+
+$ python pwgen.py
+How many characters do you want in your password (12-52)? 25
+Strong Password:  3@Yp8mK!xL2#nQwE4$jRtB5&v
+len is 25
 ```
 
 ## Running Tests
