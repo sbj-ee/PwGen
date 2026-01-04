@@ -1,5 +1,7 @@
 # PwGen
 
+[![CI](https://github.com/sbj-ee/PwGen/actions/workflows/ci.yml/badge.svg)](https://github.com/sbj-ee/PwGen/actions/workflows/ci.yml)
+
 A simple password generator that creates strong passwords with guaranteed character type placement.
 
 ## Features
